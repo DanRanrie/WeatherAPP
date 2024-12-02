@@ -3,6 +3,7 @@ package com.example.weatherapp.logic.network
 import com.example.weatherapp.WeatherApplication
 import com.example.weatherapp.WeatherApplication.Companion.GaoDeWeatherAPI
 import com.example.weatherapp.logic.model.PlaceResponse
+import com.example.weatherapp.logic.model.WeatherForecast
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

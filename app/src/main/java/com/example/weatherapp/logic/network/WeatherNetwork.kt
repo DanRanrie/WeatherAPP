@@ -11,10 +11,14 @@ import kotlin.math.log
 
 object WeatherNetwork {
 
+    // 类实例方法 和 泛型方法 这两种好像都可以实现效果
     private val placeService = ServiceCreator.create<PlaceService>()
+    private val weatherService = ServiceCreator.create(WeatherService::class.java)
 
     // await 等待结果 阻塞
     suspend fun searchPlaces(city: String) = placeService.searchPlaces(city).await()
+
+    suspend fun searchWeather(city: String) = weatherService.searchWeather(city).await()
 
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine {
