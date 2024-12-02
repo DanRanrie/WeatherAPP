@@ -8,6 +8,10 @@ import com.example.weatherapp.logic.model.Lives
 
 class PlaceViewModel : ViewModel() {
 
+    fun saveCity(city: Lives) = Repository.saveCity(city)
+    fun getSavedCity() = Repository.getSavedCity()
+    fun isCitySaved() = Repository.isCitySaved()
+
     private val searchLiveData = MutableLiveData<String>()
 
     val LivesList = ArrayList<Lives>()

@@ -1,6 +1,8 @@
 package com.example.weatherapp.logic
 
 import androidx.lifecycle.liveData
+import com.example.weatherapp.logic.dao.PlaceDao
+import com.example.weatherapp.logic.model.Lives
 import com.example.weatherapp.logic.model.PlaceResponse
 import com.example.weatherapp.logic.model.Weather
 import com.example.weatherapp.logic.network.WeatherNetwork
@@ -10,6 +12,11 @@ import kotlinx.coroutines.coroutineScope
 import kotlin.coroutines.CoroutineContext
 
 object Repository {
+
+    // 数据本地持久化
+    fun saveCity(city: Lives) = PlaceDao.saveCity(city)
+    fun getSavedCity() = PlaceDao.getSavedCity()
+    fun isCitySaved() = PlaceDao.isCitySaved()
     fun searchPlaces(city: String) = fire(Dispatchers.IO) {
             val placeResponse:PlaceResponse
             if(city =="老登的家"){

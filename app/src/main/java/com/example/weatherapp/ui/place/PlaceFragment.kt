@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui.place
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +16,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weatherapp.MainActivity
 import com.example.weatherapp.R
+import com.example.weatherapp.WeatherActivity
 import com.example.weatherapp.WeatherApplication
 import kotlin.math.log
 
@@ -39,26 +42,54 @@ class PlaceFragment : Fragment() {
     }
 
 
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        val layoutManager = LinearLayoutManager(activity)
+//        recyclerView.layoutManager = layoutManager
+//        adapter = PlaceAdapter(this, viewModel.LivesList)
+//        recyclerView.adapter = adapter
+//        // 莫名其妙的addTextChangedListener报错，重新 . 点引用一下就好了
+//        searchPlaceEdit.addTextChangedListener {
+//            editable ->
+//            val content = editable.toString()
+//            if (content.isNotEmpty()) {
+//                viewModel.searchPlaces(content)
+//            } else {
+//                recyclerView.visibility = View.GONE
+//                bgImageView.visibility = View.VISIBLE
+//                viewModel.LivesList.clear()
+//                adapter.notifyDataSetChanged()
+//            }
+//        }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val layoutManager = LinearLayoutManager(activity)
-        recyclerView.layoutManager = layoutManager
-        adapter = PlaceAdapter(this, viewModel.LivesList)
-        recyclerView.adapter = adapter
-        // 莫名其妙的addTextChangedListener报错，重新 . 点引用一下就好了
-        searchPlaceEdit.addTextChangedListener {
-            editable ->
-            val content = editable.toString()
-            if (content.isNotEmpty()) {
-                viewModel.searchPlaces(content)
-            } else {
-                recyclerView.visibility = View.GONE
-                bgImageView.visibility = View.VISIBLE
-                viewModel.LivesList.clear()
-                adapter.notifyDataSetChanged()
+        if (activity is MainActivity && viewModel.isCitySaved()){
+            val place = viewModel.getSavedCity()
+            val intent = Intent(context, WeatherActivity::class.java).apply {
+                putExtra("city", place.city)
             }
+            startActivity(intent)
+            activity?.finish()
+            return
         }
-        // 这里不让用this，可能Fragment不给当生命周期使用
+    val layoutManager = LinearLayoutManager(activity)
+    recyclerView.layoutManager = layoutManager
+    adapter = PlaceAdapter(this, viewModel.LivesList)
+    recyclerView.adapter = adapter
+    // 莫名其妙的addTextChangedListener报错，重新 . 点引用一下就好了
+    searchPlaceEdit.addTextChangedListener {
+        editable ->
+        val content = editable.toString()
+        if (content.isNotEmpty()) {
+            viewModel.searchPlaces(content)
+        } else {
+            recyclerView.visibility = View.GONE
+            bgImageView.visibility = View.VISIBLE
+            viewModel.LivesList.clear()
+            adapter.notifyDataSetChanged()
+        }
+    }
+    // 这里不让用this，可能Fragment不给当生命周期使用
         viewModel.placeLiveData.observe(viewLifecycleOwner, Observer{ result ->
             val lives = result.getOrNull()
             if (lives != null) {
@@ -73,5 +104,4 @@ class PlaceFragment : Fragment() {
             }
         })
     }
-
 }
