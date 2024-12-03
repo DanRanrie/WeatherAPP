@@ -113,9 +113,9 @@ class WeatherActivity : FragmentActivity() {
         reporttime.text = nowWeather[0].reporttime
         val nowLayout = findViewById<RelativeLayout>(R.id.nowLayout)
         val high = findViewById<TextView>(R.id.high)
-        high.text = "最高气温：" + forecasts[0].casts[0].daytemp + "℃"
+        high.text = "最高气温：" +  forecasts[0].casts[0].daytemp + "℃"
         val low = findViewById<TextView>(R.id.low)
-        low.text = "最低气温：" + forecasts[0].casts[0].nighttemp + "℃"
+        low.text = "最低气温：" +  forecasts[0].casts[0].nighttemp + "℃"
         nowLayout.setBackgroundResource(getSky(nowWeather[0].weather).bg)
         //  填充forecastweather布局中的数据
         val forecastLayout = findViewById<LinearLayout>(R.id.forecastLayout)
